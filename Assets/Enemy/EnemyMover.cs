@@ -20,7 +20,6 @@ public class EnemyMover : MonoBehaviour
     {
         ReturnToStart();
         RecalculatePath(true);
-        StartCoroutine(FollowPath());
     }
 
     private void Awake()
@@ -49,7 +48,7 @@ public class EnemyMover : MonoBehaviour
         }
         StopAllCoroutines();
         path.Clear();
-        path = pathFinder.GetNewPath();
+        path = pathFinder.GetNewPath(coordinates);
         StartCoroutine(FollowPath());
     }
 

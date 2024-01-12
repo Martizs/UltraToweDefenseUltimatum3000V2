@@ -29,17 +29,14 @@ public class PathFinder : MonoBehaviour
     GridManager gridManager;
     Dictionary<Vector2Int, Node> grid = new Dictionary<Vector2Int, Node>();
 
-    private void Awake()
+    void Awake()
     {
         gridManager = FindObjectOfType<GridManager>();
-
         if (gridManager != null)
         {
             grid = gridManager.Grid;
-            startNode = gridManager.Grid[startCoordinates];
-            destinationNode = gridManager.Grid[destinationCoordinates];
-            startNode.isWalkable = true;
-            destinationNode.isWalkable = true;
+            startNode = grid[startCoordinates];
+            destinationNode = grid[destinationCoordinates];
         }
     }
 
@@ -76,16 +73,6 @@ public class PathFinder : MonoBehaviour
 
         foreach (Node neighbour in neighbours)
         {
-            if (neighbour.coordinates.x == 4 && neighbour.coordinates.y == 5)
-            {
-                Debug.Log($"neighbour 4, 5 isWalkable - {neighbour.isWalkable}");
-            }
-
-            if (neighbour.coordinates.x == 4 && neighbour.coordinates.y == 6)
-            {
-                Debug.Log($"neighbour 4, 6 isWalkable - {neighbour.isWalkable}");
-            }
-
             if (!reached.ContainsKey(neighbour.coordinates) && neighbour.isWalkable)
             {
                 neighbour.connectedTo = currentSearchNode;
@@ -97,25 +84,25 @@ public class PathFinder : MonoBehaviour
 
     void BreadthFirstSearch(Vector2Int coordinates)
     {
-        gridManager.ResetNodes();
+        startNode.isWalkable = true;
+        destinationNode.isWalkable = true;
+
         frontier.Clear();
         reached.Clear();
 
         bool isRunning = true;
 
         frontier.Enqueue(grid[coordinates]);
-        reached.Add(startCoordinates, grid[coordinates]);
+        reached.Add(coordinates, grid[coordinates]);
 
         while (frontier.Count > 0 && isRunning)
         {
             currentSearchNode = frontier.Dequeue();
             currentSearchNode.isExplored = true;
             ExploreNeighbours();
-
             if (currentSearchNode.coordinates == destinationCoordinates)
             {
                 isRunning = false;
-                break;
             }
         }
     }
@@ -146,9 +133,7 @@ public class PathFinder : MonoBehaviour
             bool prevState = grid[coordinates].isWalkable;
 
             grid[coordinates].isWalkable = false;
-
             List<Node> newPath = GetNewPath();
-
             grid[coordinates].isWalkable = prevState;
 
             if (newPath.Count <= 1)
