@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"editor.accessibilityPageSize": 10,
+		"dotnetAcquisitionExtension.existingDotnetPath": [
+			{
+				"extensionId": "ms-dotnettools.csharp",
+				"path": "C:\\Program Files\\dotnet\\dotnet.exe"
+			}
+		]
+	}
+}
